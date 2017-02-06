@@ -44,32 +44,33 @@ def AnalogError(e):
         print("Phidget Exception %i: %s" % (e.code, e.details))
 
 def callback(data):
-	rospy.loginfo("Received data:\n Velocity:%4.2f, Direction:%4.2f" % (data.velocity,data.direction))
+	#rospy.loginfo("Received data:\n Velocity:%4.2f, Direction:%4.2f" % (data.velocity,data.direction))
 	try:
-	    print("Enabling Velocity Channel (0)...")
-	    analog.setEnabled(0, True)
+	    #print("Enabling Velocity Channel (0)...")
+	    #analog.setEnabled(0, True)
 	    #sleep(1)
 
-	    print("Enabling Direction Channel (1)...")
-	    analog.setEnabled(1, True)
+	    #print("Enabling Direction Channel (1)...")
+	    #analog.setEnabled(1, True)
 	    #sleep(1)
 
-	    print("Set velocity to %4.2f" % (data.velocity))
+	    #print("Set velocity to %4.2f" % (data.velocity))
 	    analog.setVoltage(0, data.velocity)
 	    #sleep(1)
 
-	    print("Set direction to %4.2f" % (data.direction))
+	    #print("Set direction to %4.2f" % (data.direction))
 	    analog.setVoltage(1, data.direction)
 	    #sleep(1)
 
+	#This error message needs to be modifed /Rui
 	except PhidgetException as e:
 	    print("Phidget Exception %i: %s" % (e.code, e.details))
 	    print("Exiting....")
-	    exit(1)
+	    sys.exit(1)
 
 def listener():
 	rospy.init_node("signal_generator")
-	rospy.Subscriber("wheelchair_speed",Speed,callback)
+	rospy.Subscriber("wheelchair_teleop/cmd_vel",Speed,callback)
 
 	rospy.spin()
 	rospy.on_shutdown(emergencystop)
@@ -104,7 +105,7 @@ if __name__ == "__main__":
 
 	try:
 	    analog.waitForAttach(10000)
-	except PhidgetException as e:
+	except Exception as e:
 	    print("Phidget Exception %i: %s" % (e.code, e.details))
 	    try:
 	        analog.closePhidget()
@@ -117,4 +118,12 @@ if __name__ == "__main__":
 	else:
 	    displayDeviceInfo()
 
+	try:
+		print("Enabling Velocity Channel (0)...")
+		analog.setEnabled(0, True)
+		print("Enabling Velocity Channel (1)...")
+		analog.setEnabled(1, True)
+	except Exception as e:
+		print "Can't enable channel\n"
+		print e
 	listener()

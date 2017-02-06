@@ -2,7 +2,7 @@
 	<!-- Wheelchair speed control demo -->
 	<node name="signal_generator" pkg="speed_control" type="signal_generator.py" respawn="false" output="screen" >
 	</node>
-	<node name="speed_controller" pkg="speed_control" type="speed_controller.py" respawn="false" output="screen" >
+	<node name="wheelchair_teleop" pkg="speed_control" type="teleop.py" respawn="false" output="screen" >
 	</node>
 
 </launch>

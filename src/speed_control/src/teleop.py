@@ -21,23 +21,27 @@ e/c : increase/decrease only angular speed by 10%
 space key, k : force stop
 anything else : stop smoothly
 
+maximum speed : 10
+minimum speed : -10
+
 CTRL-C to quit
 """
 
 moveBindings = {
         'i':(1,0),
-        'o':(1,-1),
-        'j':(0,1),
-        'l':(0,-1),
-        'u':(1,1),
+        'o':(1,1),
+        'j':(0,-1),
+        'l':(0,1),
+        'u':(1,-1),
         ',':(-1,0),
         '.':(-1,1),
         'm':(-1,-1),
            }
 
+#increase/decrease speed(voltage) by 2
 speedBindings={
-        'q':(1.1,1.1),
-        'z':(.9,.9),
+        'q':(2,2),
+        'z':(-2,-2),
         'w':(1.1,1),
         'x':(.9,1),
         'e':(1,1.1),
@@ -55,8 +59,8 @@ def getKey():
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
 
-speed = .2
-turn = 1
+speed = 2
+turn = 2
 
 def vels(speed,turn):
     return "currently:\tspeed %s\tturn %s " % (speed,turn)
@@ -86,9 +90,13 @@ if __name__=="__main__":
                 th = moveBindings[key][1]
                 count = 0
             elif key in speedBindings.keys():
-                speed = speed * speedBindings[key][0]
-                turn = turn * speedBindings[key][1]
+                speed = min(speed + speedBindings[key][0], 10)
+                turn = min(turn + speedBindings[key][1], 10)
                 count = 0
+                if speed < 0 or turn < 0:
+                    print "Maximum speed/turn should be positive"
+                    speed = 0
+                    turn = 0
 
                 print vels(speed,turn)
                 if (status == 14):
@@ -110,18 +118,18 @@ if __name__=="__main__":
             target_speed = speed * x
             target_turn = turn * th
 
-            #0.02 -> acceleration
+            #0.5 -> acceleration, need to be big enough to overcome the friction
             if target_speed > control_speed:
-                control_speed = min( target_speed, control_speed + 0.02 )
+                control_speed = min( target_speed, control_speed + 0.5 )
             elif target_speed < control_speed:
-                control_speed = max( target_speed, control_speed - 0.02 )
+                control_speed = max( target_speed, control_speed - 0.5 )
             else:
                 control_speed = target_speed
 
             if target_turn > control_turn:
-                control_turn = min( target_turn, control_turn + 0.1 )
+                control_turn = min( target_turn, control_turn + 0.5 )
             elif target_turn < control_turn:
-                control_turn = max( target_turn, control_turn - 0.1 )
+                control_turn = max( target_turn, control_turn - 0.5 )
             else:
                 control_turn = target_turn
 

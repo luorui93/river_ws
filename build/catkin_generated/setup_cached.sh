@@ -7,4 +7,6 @@
 # new environment variables
 
 # modified environment variables
-export PWD="/home/riverwheelchair/river_ws/build"
+export PKG_CONFIG_PATH="/opt/ros/indigo/lib/pkgconfig"
+export PWD="/home/yaphes/river_ws/build"
+export ROS_PACKAGE_PATH="/home/yaphes/river_ws/src:/opt/ros/indigo/share:/opt/ros/indigo/stacks"

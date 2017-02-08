@@ -1,2 +1,2 @@
 speed_control:test
--DCATKIN_DEVEL_PREFIX=/home/riverwheelchair/river_ws/devel -DCMAKE_INSTALL_PREFIX=/home/riverwheelchair/river_ws/install -G Unix Makefiles
+-DCATKIN_DEVEL_PREFIX=/home/yaphes/river_ws/devel -DCMAKE_INSTALL_PREFIX=/home/yaphes/river_ws/install -G Unix Makefiles

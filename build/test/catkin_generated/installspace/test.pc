@@ -1,8 +1,8 @@
-prefix=/home/riverwheelchair/river_ws/install
+prefix=/home/yaphes/river_ws/install
 
 Name: test
 Description: Description of test
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/riverwheelchair/river_ws/install/lib 
+Libs: -L/home/yaphes/river_ws/install/lib 
 Requires: 

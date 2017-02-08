@@ -2,7 +2,7 @@
 
 message(STATUS "speed_control: 1 messages, 0 services")
 
-set(MSG_I_FLAGS "-Ispeed_control:/home/riverwheelchair/river_ws/src/speed_control/msg;-Istd_msgs:/opt/ros/indigo/share/std_msgs/cmake/../msg")
+set(MSG_I_FLAGS "-Ispeed_control:/home/yaphes/river_ws/src/speed_control/msg;-Istd_msgs:/opt/ros/indigo/share/std_msgs/cmake/../msg")
 
 # Find all generators
 find_package(gencpp REQUIRED)
@@ -15,9 +15,9 @@ add_custom_target(speed_control_generate_messages ALL)
 
 
 
-get_filename_component(_filename "/home/riverwheelchair/river_ws/src/speed_control/msg/Speed.msg" NAME_WE)
+get_filename_component(_filename "/home/yaphes/river_ws/src/speed_control/msg/Speed.msg" NAME_WE)
 add_custom_target(_speed_control_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "speed_control" "/home/riverwheelchair/river_ws/src/speed_control/msg/Speed.msg" "std_msgs/Header"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "speed_control" "/home/yaphes/river_ws/src/speed_control/msg/Speed.msg" "std_msgs/Header"
 )
 
 #
@@ -27,7 +27,7 @@ add_custom_target(_speed_control_generate_messages_check_deps_${_filename}
 ### Section generating for lang: gencpp
 ### Generating Messages
 _generate_msg_cpp(speed_control
-  "/home/riverwheelchair/river_ws/src/speed_control/msg/Speed.msg"
+  "/home/yaphes/river_ws/src/speed_control/msg/Speed.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/indigo/share/std_msgs/cmake/../msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/speed_control
@@ -47,7 +47,7 @@ add_custom_target(speed_control_generate_messages_cpp
 add_dependencies(speed_control_generate_messages speed_control_generate_messages_cpp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/riverwheelchair/river_ws/src/speed_control/msg/Speed.msg" NAME_WE)
+get_filename_component(_filename "/home/yaphes/river_ws/src/speed_control/msg/Speed.msg" NAME_WE)
 add_dependencies(speed_control_generate_messages_cpp _speed_control_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -60,7 +60,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS speed_control_generate_messages_cpp
 ### Section generating for lang: genlisp
 ### Generating Messages
 _generate_msg_lisp(speed_control
-  "/home/riverwheelchair/river_ws/src/speed_control/msg/Speed.msg"
+  "/home/yaphes/river_ws/src/speed_control/msg/Speed.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/indigo/share/std_msgs/cmake/../msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/speed_control
@@ -80,7 +80,7 @@ add_custom_target(speed_control_generate_messages_lisp
 add_dependencies(speed_control_generate_messages speed_control_generate_messages_lisp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/riverwheelchair/river_ws/src/speed_control/msg/Speed.msg" NAME_WE)
+get_filename_component(_filename "/home/yaphes/river_ws/src/speed_control/msg/Speed.msg" NAME_WE)
 add_dependencies(speed_control_generate_messages_lisp _speed_control_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -93,7 +93,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS speed_control_generate_messages_lis
 ### Section generating for lang: genpy
 ### Generating Messages
 _generate_msg_py(speed_control
-  "/home/riverwheelchair/river_ws/src/speed_control/msg/Speed.msg"
+  "/home/yaphes/river_ws/src/speed_control/msg/Speed.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/indigo/share/std_msgs/cmake/../msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/speed_control
@@ -113,7 +113,7 @@ add_custom_target(speed_control_generate_messages_py
 add_dependencies(speed_control_generate_messages speed_control_generate_messages_py)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/riverwheelchair/river_ws/src/speed_control/msg/Speed.msg" NAME_WE)
+get_filename_component(_filename "/home/yaphes/river_ws/src/speed_control/msg/Speed.msg" NAME_WE)
 add_dependencies(speed_control_generate_messages_py _speed_control_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility

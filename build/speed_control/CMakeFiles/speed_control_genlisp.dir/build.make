@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/riverwheelchair/river_ws/src
+CMAKE_SOURCE_DIR = /home/yaphes/river_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/riverwheelchair/river_ws/build
+CMAKE_BINARY_DIR = /home/yaphes/river_ws/build
 
 # Utility rule file for speed_control_genlisp.
 
@@ -56,10 +56,10 @@ speed_control/CMakeFiles/speed_control_genlisp.dir/build: speed_control_genlisp
 .PHONY : speed_control/CMakeFiles/speed_control_genlisp.dir/build
 
 speed_control/CMakeFiles/speed_control_genlisp.dir/clean:
-	cd /home/riverwheelchair/river_ws/build/speed_control && $(CMAKE_COMMAND) -P CMakeFiles/speed_control_genlisp.dir/cmake_clean.cmake
+	cd /home/yaphes/river_ws/build/speed_control && $(CMAKE_COMMAND) -P CMakeFiles/speed_control_genlisp.dir/cmake_clean.cmake
 .PHONY : speed_control/CMakeFiles/speed_control_genlisp.dir/clean
 
 speed_control/CMakeFiles/speed_control_genlisp.dir/depend:
-	cd /home/riverwheelchair/river_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/riverwheelchair/river_ws/src /home/riverwheelchair/river_ws/src/speed_control /home/riverwheelchair/river_ws/build /home/riverwheelchair/river_ws/build/speed_control /home/riverwheelchair/river_ws/build/speed_control/CMakeFiles/speed_control_genlisp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/yaphes/river_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/yaphes/river_ws/src /home/yaphes/river_ws/src/speed_control /home/yaphes/river_ws/build /home/yaphes/river_ws/build/speed_control /home/yaphes/river_ws/build/speed_control/CMakeFiles/speed_control_genlisp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : speed_control/CMakeFiles/speed_control_genlisp.dir/depend
 

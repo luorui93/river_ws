@@ -137,7 +137,7 @@ public:
 
     an_decoder_initialise(&an_decoder_);
 
-    euler_orientation_received = true;
+    euler_orientation_received = false;
     quaternion_orientation_std_received_ = false;
     quaternion_orientation_received_ = false;
     acceleration_received_ = false;
@@ -146,6 +146,20 @@ public:
     running_time_received_ = false;
     device_information_received_ = false;
   }
+  void setZero() {
+    gpio_configuration_packet_t gpio_configuration_packet;
+    gpio_configuration_packet.permanent = 0;
+    gpio_configuration_packet.gpio_function[0] = set_zero_alignment;
+    gpio_configuration_packet.gpio_function[1] = inactive;
+    gpio_configuration_packet.gpio_function[2] = inactive;
+    gpio_configuration_packet.gpio_function[3] = inactive;
+
+    an_packet_t *an_packet;
+    an_packet = encode_gpio_configuration_packet(&gpio_configuration_packet);
+    an_packet_encode_and_send(an_packet);
+    an_packet_free(&an_packet);
+
+  }
   void spin() {
     while (ros::ok()) {
       while(receive_next_packet()){
@@ -153,7 +167,7 @@ public:
 	if(euler_orientation_received && quaternion_orientation_std_received_ && quaternion_orientation_received_
 	   && acceleration_received_ && angular_velocity_received_ && raw_sensors_received_) {
 	  publish_imu_msg();
-    euler_orientation_received = true;
+    euler_orientation_received = false;
 	  quaternion_orientation_std_received_ = false;
 	  quaternion_orientation_received_ = false;
 	  acceleration_received_ = false;
@@ -461,6 +475,7 @@ int main(int argc, char *argv[]) {
   try {
     OrientusNode node(nh, pnh);
 
+    node.setZero();
     node.spin();
   } catch(std::exception& e){
     ROS_FATAL_STREAM("Exception thrown: " << e.what());

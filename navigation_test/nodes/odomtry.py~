@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+import roslib
+roslib.load_manifest('navigation_test')
+
+import rospy
+from nav_msgs.msg import Odometry
+import tf
+import math
+
+def odometry_talker():
+    pub_odom = rospy.Publisher('Odom', Odometry, queue_size =5)
+    rospy.init_node('Odom_talker')
+    br = tf.TransformBroadcaster()
+    rate = rospy.Rate(10)
+    Odom = Odometry();
+    t = rospy.Time.now().secs
+    current = rospy.Time.now()
+    Odom.header.stamp = current
+    Odom.header.frame_id = "Odom"
+    Odom.child_frame_id = "base_link"
+    Odom.pose.pose.position.x = 2*math.cos(t/3)
+    Odom.pose.pose.position.y = 2*math.sin(t/3)
+    Odom.pose.pose.position.z = 0.0
+    x = Odom.pose.pose.position.x
+    y = Odom.pose.pose.position.y
+    z = Odom.pose.pose.position.z
+    Odom.pose.pose.orientation.x = 0.0
+    Odom.pose.pose.orientation.y = 0.0
+    Odom.pose.pose.orientation.z = 0.0
+    Odom.pose.pose.orientation.w = 1.0
+    while not rospy.is_shutdown():
+        br.sendTransform((x, y, z),
+                         (0.0, 0.0, 0.0, 1.0),
+                         current,
+                         "base_footprint",
+                         "odom")
+        pub_odom.publish(Odom)
+        rate.sleep()
+
+if __name__ == '__main__':
+    try:
+        odometry_talker()
+    except rospy.ROSInterruptException:
+        pass
+        

@@ -29,10 +29,10 @@ CTRL-C to quit
 
 moveBindings = {
         'i':(1,0),
-        'o':(1,1),
+        'o':(1,0.5),
         'j':(0,-1),
         'l':(0,1),
-        'u':(1,-1),
+        'u':(1,-0.5),
         ',':(-1,0),
         '.':(-1,1),
         'm':(-1,-1),
@@ -69,7 +69,7 @@ if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
     
     rospy.init_node('wheelchair_teleop')
-    pub = rospy.Publisher('~cmd_vel', Speed, queue_size=5)
+    pub = rospy.Publisher('/navigation_velocity_smoother/raw_cmd_vel', Twist, queue_size=5)
 
     x = 0
     th = 0
@@ -120,22 +120,22 @@ if __name__=="__main__":
 
             #0.5 -> acceleration, need to be big enough to overcome the friction
             if target_speed > control_speed:
-                control_speed = min( target_speed, control_speed + 0.5 )
+                control_speed = min( target_speed, control_speed + 1 )
             elif target_speed < control_speed:
-                control_speed = max( target_speed, control_speed - 0.5 )
+                control_speed = max( target_speed, control_speed - 1 )
             else:
                 control_speed = target_speed
 
             if target_turn > control_turn:
-                control_turn = min( target_turn, control_turn + 0.5 )
+                control_turn = min( target_turn, control_turn + 01 )
             elif target_turn < control_turn:
-                control_turn = max( target_turn, control_turn - 0.5 )
+                control_turn = max( target_turn, control_turn - 1 )
             else:
                 control_turn = target_turn
 
-            msg = Speed()
-            msg.velocity = control_speed
-            msg.direction = control_turn
+            msg = Twist()
+            msg.linear.x = control_speed
+            msg.angular.z = control_turn
             pub.publish(msg)
 
     except Exception as e:
@@ -143,9 +143,9 @@ if __name__=="__main__":
         print e
 
     finally:
-        msg = Speed()
-        msg.velocity = 0.0
-        msg.direction = 0.0
+        msg = Twist()
+        msg.linear.x = 0.0
+        msg.angular.z = 0.0
         pub.publish(msg)
 
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)

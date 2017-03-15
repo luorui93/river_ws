@@ -1,0 +1,8 @@
+prefix=/home/riverwheelchair/river_ws/src/libfovis-indigo/build/devel
+
+Name: libfovis
+Description: Description of libfovis
+Version: 0.0.10
+Cflags: -I/home/riverwheelchair/river_ws/src/libfovis-indigo/libfovis
+Libs: -L/home/riverwheelchair/river_ws/src/libfovis-indigo/build/devel/lib -lfovis
+Requires: 

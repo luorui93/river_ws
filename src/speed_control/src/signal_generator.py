@@ -10,11 +10,14 @@ from Phidgets.Phidget import PhidgetLogLevel
 #import ROS library
 import rospy
 from speed_control.msg import Speed
+from geometry_msgs.msg import Twist
 
 def emergencystop():
 	print("emergency stop!")
 	analog.setEnabled(0,False)
 	analog.setEnabled(1,False)
+	analog.setVoltage(0, 0)	    
+	analog.setVoltage(1, 0)
 
 #Information Display Function
 def displayDeviceInfo():
@@ -46,21 +49,15 @@ def AnalogError(e):
 def callback(data):
 	#rospy.loginfo("Received data:\n Velocity:%4.2f, Direction:%4.2f" % (data.velocity,data.direction))
 	try:
-	    #print("Enabling Velocity Channel (0)...")
-	    #analog.setEnabled(0, True)
-	    #sleep(1)
-
-	    #print("Enabling Direction Channel (1)...")
-	    #analog.setEnabled(1, True)
-	    #sleep(1)
-
-	    #print("Set velocity to %4.2f" % (data.velocity))
-	    analog.setVoltage(0, data.velocity)
-	    #sleep(1)
-
-	    #print("Set direction to %4.2f" % (data.direction))
-	    analog.setVoltage(1, data.direction)
-	    #sleep(1)
+		velocity = data.linear.x * 9.8 
+		direction = -data.angular.z * 6.6 #minus -> left turn positive -> right turn
+		analog.setVoltage(0, velocity)	    
+		analog.setVoltage(1, direction)
+		pub = rospy.Publisher("output_speed", Speed, queue_size = 100)
+		speed = Speed()
+		speed.velocity = velocity
+		speed.direction = direction
+		pub.publish(speed)
 
 	#This error message needs to be modifed /Rui
 	except PhidgetException as e:
@@ -70,7 +67,8 @@ def callback(data):
 
 def listener():
 	rospy.init_node("signal_generator")
-	rospy.Subscriber("wheelchair_teleop/cmd_vel",Speed,callback)
+	# rospy.Subscriber("wheelchair_teleop/cmd_vel",Twist,callback)
+	rospy.Subscriber("/navigation_velocity_smoother/raw_cmd_vel", Twist, callback)
 
 	rospy.spin()
 	rospy.on_shutdown(emergencystop)

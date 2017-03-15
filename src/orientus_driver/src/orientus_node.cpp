@@ -147,17 +147,19 @@ public:
     device_information_received_ = false;
   }
   void setZero() {
-    gpio_configuration_packet_t gpio_configuration_packet;
-    gpio_configuration_packet.permanent = 0;
-    gpio_configuration_packet.gpio_function[0] = set_zero_alignment;
-    gpio_configuration_packet.gpio_function[1] = inactive;
-    gpio_configuration_packet.gpio_function[2] = inactive;
-    gpio_configuration_packet.gpio_function[3] = inactive;
-
+    //Reset orientation every time
     an_packet_t *an_packet;
-    an_packet = encode_gpio_configuration_packet(&gpio_configuration_packet);
+    an_packet = encode_reset_packet();
     an_packet_encode_and_send(an_packet);
     an_packet_free(&an_packet);
+
+    // zero_alignment_packet_t zero_alignment_packet;
+    // zero_alignment_packet.permanent = 0;
+
+    // an_packet_t *an_packet;
+    // an_packet = encode_zero_alignment_packet(&zero_alignment_packet);
+    // an_packet_encode_and_send(an_packet);
+    // an_packet_free(&an_packet);
 
   }
   void spin() {
@@ -291,6 +293,7 @@ private:
 	}
 	else {
 	  ROS_WARN("Unknown packet id: %d", an_packet->id);
+    ROS_WARN("Packet_data: %d", an_packet->data[0]);
 	}
 
 	an_packet_free(&an_packet);
@@ -387,11 +390,12 @@ private:
   void publish_imu_msg() {
     sensor_msgs::Imu imu_msg;
 
-     geometry_msgs::Vector3 euler_orientation;
+    geometry_msgs::Vector3 euler_orientation;
 
     euler_orientation.x = euler_orientation_packet_.orientation[0] * 180 / M_PI; //roll(degree)
     euler_orientation.y = euler_orientation_packet_.orientation[1] * 180 / M_PI; //pitch(degree)
     euler_orientation.z = euler_orientation_packet_.orientation[2] * 180 / M_PI; //heading(degree)
+
     float orientation_covariance[9] = {pow((quaternion_std_packet_.standard_deviation[0]), 2.0), 0, 0,
 				       0, pow((quaternion_std_packet_.standard_deviation[1]), 2.0), 0,
 				       0, 0, pow((quaternion_std_packet_.standard_deviation[2]), 2.0)};
@@ -475,7 +479,7 @@ int main(int argc, char *argv[]) {
   try {
     OrientusNode node(nh, pnh);
 
-    node.setZero();
+    //node.setZero();
     node.spin();
   } catch(std::exception& e){
     ROS_FATAL_STREAM("Exception thrown: " << e.what());

@@ -1,0 +1,35 @@
+ <launch>
+   <!--map server-->
+  <arg name="map_file" default="$(find wheelchair)/maps/corridor.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+  <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" 
+	args="0 0 0 0 0 0 1 map odom 100" /> 
+
+  <!--Sensor filter-->
+  <param name="/odom" value="odom"/>
+  <param name="/base_frame" value="base_footprint"/>
+  <node pkg="wheelchair" type="navigation_filter.py" name="navigation_filter"/>
+
+  <!--Fundamental TF broadcaster-->
+  <node pkg="wheelchair" type="convert_kinect_frame.py" name="tf_broadcaster"/> 
+
+  <!--Imu node-->
+  <node pkg="orientus_driver" type="orientus_node" name="orientus_imu"/>
+
+  <!-- AMCL -->
+  <arg name="custom_amcl_launch_file" default="$(find wheelchair)/launch/includes/kinect_amcl.launch.xml"/>
+  <arg name="initial_pose_x" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+  <arg name="initial_pose_y" default="0.0"/> <!-- Use 17.0 for willow's map in simulation -->
+  <arg name="initial_pose_a" default="0.0"/>
+  <include file="$(arg custom_amcl_launch_file)">
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>  
+
+  <!-- Move base -->
+  <include file="$(find wheelchair)/launch/includes/move_base.launch.xml"/>
+
+  <!-- Signal Generator-->
+  <node name="signal_generator" pkg="speed_control" type="signal_generator.py" respawn="false" output="screen" />
+</launch>

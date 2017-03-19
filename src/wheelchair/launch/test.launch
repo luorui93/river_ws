@@ -30,6 +30,10 @@
   <!-- Move base -->
   <include file="$(find wheelchair)/launch/includes/move_base.launch.xml"/>
 
+  <!--kinect-->
+  <include file="$(find wheelchair)/launch/kinect2_fovis.launch"/>
+
   <!-- Signal Generator-->
-  <node name="signal_generator" pkg="speed_control" type="signal_generator.py" respawn="false" output="screen" />
+  <node name="signal_generator" pkg="speed_control" type="signal_generator.py" respawn="true" output="screen" />
+
 </launch>

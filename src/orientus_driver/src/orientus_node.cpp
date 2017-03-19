@@ -74,7 +74,13 @@ public:
     {
       std::cerr << "Cannot Open Port:"<<port_name_<<std::endl;
     }
+
+    // Reset IMU
     an_packet_t *an_packet;
+    // an_packet = encode_reset_packet();
+    // an_packet_encode_and_send(an_packet);
+    // an_packet_free(&an_packet);
+
     // Request device information
     an_packet = encode_request_packet(packet_id_device_information);
     an_packet_encode_and_send(an_packet);
@@ -167,7 +173,8 @@ public:
       while(receive_next_packet()){
     //std::cout<<"test"<<std::endl;
 	if(euler_orientation_received && quaternion_orientation_std_received_ && quaternion_orientation_received_
-	   && acceleration_received_ && angular_velocity_received_ && raw_sensors_received_) {
+	   && acceleration_received_ && angular_velocity_received_) {
+    //ROS_WARN("TEST2");
 	  publish_imu_msg();
     euler_orientation_received = false;
 	  quaternion_orientation_std_received_ = false;
@@ -248,6 +255,7 @@ private:
 	    ROS_WARN("Quaternion orientation standard deviation packet decode failure");
 	  }
 	  else{
+      //ROS_WARN("TEST2");
 	    quaternion_orientation_std_received_ = true;
 	  }
 	}
@@ -256,6 +264,7 @@ private:
       ROS_WARN("Euler orientation packet decode failure");
     }
     else {
+      //ROS_WARN("TEST2");
       euler_orientation_received = true;
     }
   }
@@ -264,6 +273,7 @@ private:
 	    ROS_WARN("Quaternion packet decode failure");
 	  }
 	  else {
+      // ROS_WARN("TEST2");
 	    quaternion_orientation_received_ = true;
 	  }
 	}
@@ -272,6 +282,7 @@ private:
 	    ROS_WARN("Acceleration packet decode failure");
 	  }
 	  else {
+      // ROS_WARN("TEST2");
 	    acceleration_received_ = true;
 	  }
 	}
@@ -280,6 +291,7 @@ private:
 	    ROS_WARN("Angular velocity packet decode failure");
 	  }
 	  else {
+      // ROS_WARN("TEST2");
 	    angular_velocity_received_ = true;
 	  }
 	}
@@ -292,13 +304,13 @@ private:
 	  }
 	}
 	else {
-	  ROS_WARN("Unknown packet id: %d", an_packet->id);
-    ROS_WARN("Packet_data: %d", an_packet->data[0]);
+	  ROS_WARN("Unknown packet id: %d of length: %d ", an_packet->id, an_packet->length);
 	}
 
 	an_packet_free(&an_packet);
       }
     }
+  //ROS_WARN("TEST");
   return true;
   }
 

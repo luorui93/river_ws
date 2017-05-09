@@ -59,14 +59,14 @@ ImuFilterRos::ImuFilterRos(ros::NodeHandle nh, ros::NodeHandle nh_private):
           ROS_WARN("Deprecation Warning: The parameter use_magnetic_field_msg was not set, default is 'false'.");
           ROS_WARN("Starting with ROS Jade, use_magnetic_field_msg will default to 'true'!");
       }
-      //changed from false
+      // Adam: changed from false
       use_magnetic_field_msg_ = true;
   }
 
   std::string world_frame;
   // Default should become false for next release
   if (!nh_private_.getParam ("world_frame", world_frame)) {
-    //changed from nwu
+    // Adam: changed from nwu
     world_frame = "enu";
     ROS_WARN("Deprecation Warning: The parameter world_frame was not set, default is 'nwu'.");
     ROS_WARN("Starting with ROS Lunar, world_frame will default to 'enu'!");
@@ -105,7 +105,7 @@ ImuFilterRos::ImuFilterRos(ros::NodeHandle nh, ros::NodeHandle nh_private):
   config_server_->setCallback(f);
 
   // **** register publishers
-  //changed from  "/data" to work with orientus node
+  // Adam: changed from  "/data"
   imu_publisher_ = nh_.advertise<sensor_msgs::Imu>(
     ros::names::resolve("imu") + "/data_filtered", 5);
 
@@ -122,7 +122,7 @@ ImuFilterRos::ImuFilterRos(ros::NodeHandle nh, ros::NodeHandle nh_private):
   // Synchronize inputs. Topic subscriptions happen on demand in the connection callback.
   int queue_size = 5;
 
-  //Changed from "/data_raw" to work with orientus node
+  // Adam: Changed from "/data_raw"
   imu_subscriber_.reset(new ImuSubscriber(
     nh_, ros::names::resolve("imu") + "/raw", queue_size));
 

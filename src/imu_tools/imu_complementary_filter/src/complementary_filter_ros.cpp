@@ -49,7 +49,8 @@ ComplementaryFilterROS::ComplementaryFilterROS(
   int queue_size = 5;
 
   // Register publishers:
-  imu_publisher_ = nh_.advertise<sensor_msgs::Imu>(ros::names::resolve("imu") + "/data", queue_size);
+  // Adam: Changed from "/data"
+  imu_publisher_ = nh_.advertise<sensor_msgs::Imu>(ros::names::resolve("imu") + "/data_complementary", queue_size);
 
   if (publish_debug_topics_)
   {
@@ -64,7 +65,8 @@ ComplementaryFilterROS::ComplementaryFilterROS(
   }
 
   // Register IMU raw data subscriber.
-  imu_subscriber_.reset(new ImuSubscriber(nh_, ros::names::resolve("imu") + "/data_raw", queue_size));
+  // Adam: Changed from "raw_data"
+  imu_subscriber_.reset(new ImuSubscriber(nh_, ros::names::resolve("imu") + "/data", queue_size));
 
   // Register magnetic data subscriber.
   if (use_mag_)
